@@ -134,6 +134,27 @@ namespace Abot.Tests.Unit.Util
         }
 
         [Test]
+        public void DoWork_CalledInitializeAfterAbortAll_DoesNotThrowException()
+        {
+            int count = 0;
+            for (int i = 0; i < 2 * MAXTHREADS; i++)
+            {
+                _unitUnderTest.DoWork(() =>
+                {
+                    System.Threading.Thread.Sleep(5);
+                    Interlocked.Increment(ref count);
+                });
+            }
+
+            System.Threading.Thread.Sleep(80);//was 20 but had to bump it up or the TaskThreadManager would fail, its way slower
+            Assert.AreEqual(2 * MAXTHREADS, count);
+
+            _unitUnderTest.AbortAll();
+            _unitUnderTest.ReInitialize();
+            Assert.DoesNotThrow<InvalidOperationException>(() => _unitUnderTest.DoWork(() => System.Threading.Thread.Sleep(10)));
+        }
+
+        [Test]
         public void Dispose()
         {
             Assert.IsTrue(_unitUnderTest is IDisposable);

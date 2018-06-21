@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace Abot.Poco
 {
@@ -14,7 +11,7 @@ namespace Abot.Poco
     /// E.g. one may use a browser control embedded in the application to get a page content and construct an instance of this class
     /// to pass it to Abot.
     /// </remarks>
-    public class HttpWebResponseWrapper
+    public class HttpWebResponseWrapper 
     {
         private readonly HttpWebResponse _internalResponse;
         private readonly byte[] _content;
